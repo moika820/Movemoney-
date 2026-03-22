@@ -75,6 +75,50 @@ return d.toISOString().split('T')[0];
 }
 
 async function crearPrestamo(){
+
+const nombre=document.getElementById('nombre').value;
+const capital=Number(document.getElementById('capital').value);
+const cuotas=Number(document.getElementById('cuotas').value);
+const fecha=document.getElementById('fechaInicio').value;
+
+if(!nombre||!capital||!cuotas||!fecha){
+alert('Faltan datos');
+return;
+}
+
+const total=Math.round(capital*1.2);
+const cuota=Math.round(total/cuotas);
+
+const plan=[];
+for(let i=0;i<cuotas;i++){
+plan.push({
+n:i+1,
+monto:cuota,
+pagado:0,
+fecha:addDays(fecha,i),
+estado:'pendiente'
+});
+}
+
+const { data, error } = await supabase
+.from('prestamos')
+.insert({
+datos:{nombre,capital,total,plan,bitacora:[]}
+});
+
+console.log('DATA:', data);
+console.log('ERROR:', error);
+
+if(error){
+alert('ERROR: ' + error.message);
+return;
+}
+
+alert('Guardado correctamente');
+
+cargar();
+nav('lista');
+}
 const nombre=document.getElementById('nombre').value;
 const capital=Number(document.getElementById('capital').value);
 const cuotas=Number(document.getElementById('cuotas').value);
