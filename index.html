@@ -219,6 +219,44 @@ verDetalle(id);
 }
 
 async function cargar(){
+
+const { data, error } = await supabase.from('prestamos').select('*');
+
+console.log('DATOS:', data);
+
+if(error){
+alert('Error cargando: ' + error.message);
+return;
+}
+
+const cont=document.getElementById('listaPrestamos');
+cont.innerHTML='';
+
+if(!data || data.length === 0){
+cont.innerHTML = "<div class='small'>No hay préstamos todavía</div>";
+return;
+}
+
+data.forEach(p=>{
+
+const d = p.datos;
+
+if(!d) return;
+
+const el=document.createElement('div');
+el.className='card';
+
+el.innerHTML=`
+<b>${d.nombre || 'Sin nombre'}</b><br>
+Total: ${format(d.total)}<br>
+<button onclick="verDetalle(${p.id})">Abrir</button>
+`;
+
+cont.appendChild(el);
+
+});
+
+}
 const {data}=await supabase.from('prestamos').select('*');
 const cont=document.getElementById('listaPrestamos');
 cont.innerHTML='';
