@@ -1,9 +1,0 @@
-{
-  "name": "MoveMoney",
-  "short_name": "MoveMoney",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#1e293b",
-  "theme_color": "#1e293b",
-  "orientation": "portrait"
-}
